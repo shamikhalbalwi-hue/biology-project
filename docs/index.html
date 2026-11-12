@@ -1,14 +1,232 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Healthier Food for Students</title></head><body>
-<h1>Healthier Food for Students</h1>
-<p>Healthy food helps your body and brain. Here are simple ideas for students.</p>
-<p>Eat many colors. Fruits and vegetables give vitamins and fiber. Try to eat some at every meal.</p>
-<p>Choose whole grains. Brown rice, oats, and whole-wheat bread give steady energy.</p>
-<p>Eat beans, fish, eggs, or nuts. They help muscles grow.</p>
-<p>Drink water. Sugary drinks have a lot of sugar and few nutrients. Water is better.</p>
-<p>Eat less salt and less fried food. Too much salt can raise blood pressure later in life.</p>
-<p>Eat breakfast. It can help you focus in class.</p>
-<p>Small changes work. Change one habit this week. Ask a friend to join you.</p>
-<p>Sources are listed below.</p>
-</body></html>
+<title>Swap Your Plate: Healthier Food for Students</title>
+<style>
+:root{
+  --ink:#17251d; --muted:#4b5b52; --paper:#f6f8f4; --white:#fff;
+  --leaf:#2b7a4b; --leaf-dark:#1d5535; --tomato:#c4412e; --sun:#f2c14e; --line:#d5ddd3;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.15;margin:0 0 .5em}
+h1{font-size:clamp(2.4rem,7vw,4.2rem);letter-spacing:-.02em}
+h2{font-size:clamp(1.7rem,4vw,2.4rem)}
+h3{font-size:1.25rem}
+p{margin:0 0 1em;max-width:62ch}
+a{color:var(--leaf-dark)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+section{padding:56px 0}
+ 
+/* hero */
+.hero{background:var(--leaf-dark);color:#fff;padding:72px 0 64px}
+.hero p{font-size:1.2rem;color:#e3efe6}
+.hero .swap{display:inline-flex;align-items:center;gap:.6em;flex-wrap:wrap;margin:0 0 1.4rem;font-size:1.05rem}
+.chip{padding:.25em .8em;border-radius:99px;font-weight:600}
+.chip.from{background:var(--tomato);text-decoration:line-through;text-decoration-thickness:2px}
+.chip.to{background:var(--sun);color:var(--ink)}
+.btn{display:inline-block;background:var(--sun);color:var(--ink);font-weight:700;padding:.7em 1.3em;border-radius:8px;text-decoration:none}
+.btn:hover{background:#ffd56e}
+ 
+/* principles */
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:24px}
+.principle{border-left:6px solid var(--leaf);background:var(--white);padding:16px 18px}
+.principle p{margin:0;font-size:1rem}
+ 
+/* swap board */
+.board{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px;margin-top:24px}
+.card{background:var(--white);border:2px solid var(--line);border-radius:14px;overflow:hidden}
+.card button{all:unset;box-sizing:border-box;display:block;width:100%;cursor:pointer;padding:18px}
+.card button:focus-visible{outline:3px solid var(--sun);outline-offset:-3px}
+.card .from{color:var(--tomato);font-weight:700}
+.card .arrow{color:var(--muted);font-size:.95rem}
+.card .to{display:block;color:var(--leaf-dark);font-weight:700;font-size:1.3rem;font-family:Georgia,serif}
+.card .tap{display:block;margin-top:8px;font-size:.9rem;color:var(--muted)}
+.detail{display:none;padding:0 18px 18px}
+.card.open{border-color:var(--leaf)}
+.card.open .detail{display:block}
+.card.open .tap{display:none}
+.detail p{font-size:1rem;margin-bottom:.6em}
+.try{background:#eaf4ec;border-radius:8px;padding:10px 12px;font-size:.98rem}
+ 
+/* checklist */
+.checklist{list-style:none;padding:0;margin:20px 0 0;max-width:640px}
+.checklist li{margin-bottom:10px}
+.checklist label{display:flex;gap:12px;align-items:flex-start;background:var(--white);border:2px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer}
+.checklist input{width:22px;height:22px;margin-top:2px;accent-color:var(--leaf)}
+.checklist input:checked+span{text-decoration:line-through;color:var(--muted)}
+#score{font-weight:700;color:var(--leaf-dark);margin-top:14px}
+ 
+/* facts band */
+.band{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:20px}
+.fact strong{display:block;font-family:Georgia,serif;font-size:1.5rem;color:var(--leaf-dark)}
+.fact p{margin:0;font-size:1rem}
+ 
+footer{padding:40px 0 60px;font-size:.95rem;color:var(--muted)}
+footer li{margin-bottom:8px}
+footer p{max-width:70ch}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+ 
+<header class="hero">
+  <div class="wrap">
+    <div class="swap" aria-hidden="true"><span class="chip from">Sugary drink</span> <span>becomes</span> <span class="chip to">Water</span></div>
+    <h1>Swap one food.<br>Help your body.</h1>
+    <p>Healthy eating does not mean a perfect diet. It means small, smart swaps. This page shows you easy swaps and why they work.</p>
+    <a class="btn" href="#swaps">See the swaps</a>
+  </div>
+</header>
+ 
+<main>
+<section>
+  <div class="wrap">
+    <h2>What is a healthy diet?</h2>
+    <p>The World Health Organization (WHO) says a healthy diet follows four ideas. Healthy diets look different in every country. These four ideas stay the same.</p>
+    <div class="grid4">
+      <div class="principle"><h3>Adequacy</h3><p>You get enough of the nutrients your body needs. Then you do not become deficient.</p></div>
+      <div class="principle"><h3>Balance</h3><p>You do not eat too much or too little of any one thing.</p></div>
+      <div class="principle"><h3>Moderation</h3><p>You limit foods with a lot of unhealthy fat, sugar, and salt.</p></div>
+      <div class="principle"><h3>Diversity</h3><p>You eat many different foods. Different foods give different nutrients.</p></div>
+    </div>
+  </div>
+</section>
+ 
+<section id="swaps" class="band">
+  <div class="wrap">
+    <h2>Six easy swaps</h2>
+    <p>Tap a card to see the better choice and the reason.</p>
+    <div class="board">
+ 
+      <div class="card">
+        <button type="button" aria-expanded="false">
+          <span class="from">Soda or sweet drink</span> <span class="arrow">&rarr; swap for</span>
+          <span class="to">Water</span><span class="tap">Tap to learn why</span>
+        </button>
+        <div class="detail">
+          <p>Sugary drinks are one of the main sources of added sugar for teenagers, says the US CDC. WHO advises that free sugars stay below 10% of your daily energy.</p>
+          <p class="try"><strong>Try this:</strong> Add a slice of lemon or a few mint leaves to cold water.</p>
+        </div>
+      </div>
+ 
+      <div class="card">
+        <button type="button" aria-expanded="false">
+          <span class="from">White bread or white rice</span> <span class="arrow">&rarr; swap for</span>
+          <span class="to">Whole grains</span><span class="tap">Tap to learn why</span>
+        </button>
+        <div class="detail">
+          <p>Whole grains still have their fiber, vitamins, and minerals. WHO lists whole grains as part of a healthy diet.</p>
+          <p class="try"><strong>Try this:</strong> Choose brown rice, oats, or whole-wheat bread.</p>
+        </div>
+      </div>
+ 
+      <div class="card">
+        <button type="button" aria-expanded="false">
+          <span class="from">Chips and salty snacks</span> <span class="arrow">&rarr; swap for</span>
+          <span class="to">Unsalted nuts or fruit</span><span class="tap">Tap to learn why</span>
+        </button>
+        <div class="detail">
+          <p>WHO advises less than 5 grams of salt per day. That is a little less than one teaspoon. Too much salt can raise blood pressure. Nuts also give healthy unsaturated fats.</p>
+          <p class="try"><strong>Try this:</strong> Keep a small bag of unsalted nuts or an apple in your school bag.</p>
+        </div>
+      </div>
+ 
+      <div class="card">
+        <button type="button" aria-expanded="false">
+          <span class="from">Fried food</span> <span class="arrow">&rarr; swap for</span>
+          <span class="to">Baked, grilled, or steamed</span><span class="tap">Tap to learn why</span>
+        </button>
+        <div class="detail">
+          <p>WHO says unhealthy fats should be limited. Frying adds a lot of fat. Baking, grilling, and steaming add less.</p>
+          <p class="try"><strong>Try this:</strong> Ask for grilled chicken or baked potatoes instead of fried.</p>
+        </div>
+      </div>
+ 
+      <div class="card">
+        <button type="button" aria-expanded="false">
+          <span class="from">Candy, cake, and sweets</span> <span class="arrow">&rarr; swap for</span>
+          <span class="to">Fresh fruit</span><span class="tap">Tap to learn why</span>
+        </button>
+        <div class="detail">
+          <p>Fruit has sugar, but it also has fiber and vitamins. WHO says to keep free sugars low. Free sugars are the sugars that are added to food and drinks.</p>
+          <p class="try"><strong>Try this:</strong> Eat dates, grapes, or banana when you want something sweet.</p>
+        </div>
+      </div>
+ 
+      <div class="card">
+        <button type="button" aria-expanded="false">
+          <span class="from">Skipping breakfast</span> <span class="arrow">&rarr; swap for</span>
+          <span class="to">A simple breakfast</span><span class="tap">Tap to learn why</span>
+        </button>
+        <div class="detail">
+          <p>The US CDC says eating breakfast is linked to better memory, better mood, and fewer missed school days.</p>
+          <p class="try"><strong>Try this:</strong> Eat an egg, a bowl of oats, or whole-wheat bread with fruit.</p>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+</section>
+ 
+<section>
+  <div class="wrap">
+    <h2>Do not forget protein and variety</h2>
+    <p>Your muscles need protein to grow. Good choices are beans, lentils, fish, eggs, and nuts. WHO also says to replace saturated fats with unsaturated fats. You find these in fish, avocado, nuts, and most plant oils.</p>
+    <p>Eat many colors of fruits and vegetables. Each color gives different nutrients.</p>
+  </div>
+</section>
+ 
+<section class="band">
+  <div class="wrap">
+    <h2>Your challenge this week</h2>
+    <p>Pick the swaps you will try. Tick the box when you do it.</p>
+    <ul class="checklist">
+      <li><label><input type="checkbox"><span>Drink water instead of a sweet drink.</span></label></li>
+      <li><label><input type="checkbox"><span>Choose one whole-grain food.</span></label></li>
+      <li><label><input type="checkbox"><span>Eat fruit instead of a sweet snack.</span></label></li>
+      <li><label><input type="checkbox"><span>Eat breakfast on three school days.</span></label></li>
+      <li><label><input type="checkbox"><span>Ask a friend to try one swap with you.</span></label></li>
+    </ul>
+    <p id="score" aria-live="polite">0 of 5 done.</p>
+  </div>
+</section>
+</main>
+ 
+<footer>
+  <div class="wrap">
+    <h2>Sources</h2>
+    <ul>
+      <li><a href="https://www.who.int/news-room/fact-sheets/detail/healthy-diet">Healthy diet (Fact sheet)</a>, WHO</li>
+      <li><a href="https://www.who.int/europe/news-room/fact-sheets/item/nutrition">Nutrition for a healthy life: WHO recommendations</a>, WHO Europe</li>
+      <li><a href="https://www.fao.org/nutrition/education/food-dietary-guidelines/en/">Dietary guidelines</a>, FAO</li>
+      <li><a href="https://www.fao.org/nutrition/education/food-dietary-guidelines/background/en">Dietary guidelines: Background</a>, FAO</li>
+      <li><a href="https://www.cdc.gov/school-nutrition/facts/index.html">Childhood Nutrition Facts</a>, CDC (USA)</li>
+    </ul>
+    <p>This is a school biology project. It gives general information for students. It is not medical advice. Talk to a doctor about personal health needs.</p>
+  </div>
+</footer>
+ 
+<script>
+document.querySelectorAll('.card button').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var card=btn.parentElement, open=card.classList.toggle('open');
+    btn.setAttribute('aria-expanded',open);
+  });
+});
+var boxes=document.querySelectorAll('.checklist input');
+function update(){
+  var n=0; boxes.forEach(function(b){if(b.checked)n++;});
+  document.getElementById('score').textContent=
+    n===boxes.length ? 'All '+n+' done. Great work!' : n+' of '+boxes.length+' done.';
+}
+boxes.forEach(function(b){b.addEventListener('change',update);});
+</script>
+</body>
+</html>
+ 
