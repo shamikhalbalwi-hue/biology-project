@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eating Habits Quiz</title>
+<style>
+:root{--ink:#17251d;--muted:#4b5b52;--paper:#f6f8f4;--white:#fff;--leaf:#2b7a4b;--leaf-dark:#1d5535;--sun:#f2c14e;--line:#d5ddd3;--tomato:#c4412e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+h1,h2,legend{font-family:Georgia,"Times New Roman",serif;line-height:1.2}
+h1{font-size:clamp(2rem,6vw,3rem);margin:0 0 .4em}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px}
+header{background:var(--leaf-dark);color:#fff;padding:40px 0}
+header p{margin:0;color:#e3efe6}
+header a{color:var(--sun)}
+a{color:var(--leaf-dark)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+fieldset{border:2px solid var(--line);border-radius:12px;background:var(--white);margin:0 0 16px;padding:14px 18px 8px}
+fieldset.missing{border-color:var(--tomato)}
+legend{font-size:1.15rem;font-weight:700;padding:0 6px}
+label{display:flex;gap:10px;align-items:flex-start;padding:8px 6px;cursor:pointer;border-radius:8px}
+label:hover{background:#eef4ee}
+input[type=radio]{width:20px;height:20px;margin-top:4px;accent-color:var(--leaf);flex:none}
+.btn{font:inherit;font-weight:700;background:var(--leaf-dark);color:#fff;border:0;border-radius:8px;padding:.7em 1.4em;cursor:pointer}
+.btn.alt{background:var(--sun);color:var(--ink)}
+#msg{color:var(--tomato);font-weight:700;margin:10px 0 0;min-height:1.6em}
+#result{display:none;background:var(--white);border:3px solid var(--leaf);border-radius:14px;padding:22px;margin:24px 0}
+#result h2{margin:0 0 .3em;font-size:1.7rem}
+#result .score{color:var(--muted);margin:0 0 .8em}
+#result ol{padding-left:1.3em}
+#result li{margin-bottom:.4em}
+.note{font-size:.95rem;color:var(--muted);padding:10px 0 50px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Eating habits quiz</h1>
+    <p>Answer 10 quick questions. Pick the answer that is closest to you. <a href="index.html">Back to the project</a></p>
+  </div>
+</header>
+
+<main class="wrap">
+  <form id="quiz" style="margin-top:28px" novalidate></form>
+  <p id="msg" role="alert"></p>
+  <div id="result" tabindex="-1" aria-live="polite"></div>
+  <p class="note">This quiz gives general ideas only. It is not medical advice and does not diagnose anything. Talk to a doctor or a school nurse about your own health needs.</p>
+</main>
+
+<script>
+var QUESTIONS=[
+ ["How often do you eat breakfast?",[["Most days",3],["Some days",2],["Rarely",1],["Never",0]]],
+ ["What do you drink most?",[["Water",3],["Milk or unsweetened tea",2],["Juice",1],["Soda or energy drinks",0]]],
+ ["How often do you eat fruit or vegetables?",[["At every meal",3],["Once a day",2],["A few times a week",1],["Almost never",0]]],
+ ["What is your usual snack?",[["Fruit or unsalted nuts",3],["A sandwich or plain popcorn",2],["Biscuits or cake",1],["Chips or candy",0]]],
+ ["What kind of bread or rice do you eat?",[["Mostly whole grain",3],["Half whole grain, half white",2],["Mostly white",1]]],
+ ["How often do you eat fried food?",[["Rarely",3],["Once or twice a week",2],["Most days",1],["Every day",0]]],
+ ["How often do you add salt or eat salty snacks?",[["Rarely",3],["Sometimes",2],["Often",1],["Very often",0]]],
+ ["How often do you eat beans, fish, eggs, or nuts?",[["Most days",3],["A few times a week",2],["Rarely",1]]],
+ ["How often do you eat sweets or sugary food?",[["Rarely",3],["A few times a week",2],["Once a day",1],["Several times a day",0]]],
+ ["How many different foods do you eat in a week?",[["Many different foods",3],["Some variety",2],["The same foods most days",1]]]
+];
+var BANDS=[
+ {min:22,title:"Strong habits",verdict:"You already make many smart choices. Keep going and keep it varied.",
+  swaps:["Try one new fruit or vegetable each week.","Add a new protein food, like lentils or fish.","Share a healthy snack with a friend."]},
+ {min:12,title:"Good start",verdict:"You do some things well. A few small changes can help more.",
+  swaps:["Swap one sweet drink for water each day.","Choose whole-grain bread or brown rice once a day.","Eat fruit instead of a sweet snack twice this week."]},
+ {min:0,title:"Small swaps, big start",verdict:"Everyone starts somewhere. Pick one swap and try it first.",
+  swaps:["Eat a simple breakfast on school days, like an egg or oats.","Swap one soda or energy drink for water.","Replace one fried meal with a baked or grilled one."]}
+];
+var form=document.getElementById("quiz");
+var html="";
+QUESTIONS.forEach(function(q,i){
+  html+='<fieldset id="f'+i+'"><legend>'+(i+1)+'. '+q[0]+'</legend>';
+  q[1].forEach(function(a,j){
+    html+='<label><input type="radio" name="q'+i+'" value="'+a[1]+'" required><span>'+a[0]+'</span></label>';
+  });
+  html+='</fieldset>';
+});
+html+='<button class="btn" type="submit">See my result</button>';
+form.innerHTML=html;
+
+form.addEventListener("submit",function(e){
+  e.preventDefault();
+  var total=0,firstMissing=null;
+  QUESTIONS.forEach(function(q,i){
+    var fs=document.getElementById("f"+i);
+    var picked=form.querySelector('input[name="q'+i+'"]:checked');
+    if(picked){total+=parseInt(picked.value,10);fs.classList.remove("missing");}
+    else{fs.classList.add("missing");if(!firstMissing)firstMissing=fs;}
+  });
+  var msg=document.getElementById("msg");
+  if(firstMissing){
+    msg.textContent="Please answer every question. Missing ones have a red border.";
+    firstMissing.scrollIntoView({behavior:"smooth",block:"center"});
+    return;
+  }
+  msg.textContent="";
+  var band=BANDS.filter(function(b){return total>=b.min;})[0];
+  var out=document.getElementById("result");
+  out.innerHTML='<h2>'+band.title+'</h2><p class="score">Your score: '+total+' out of 30</p><p><strong>'+band.verdict+'</strong></p>'
+    +'<p>Try these swaps this week:</p><ol>'+band.swaps.map(function(s){return"<li>"+s+"</li>";}).join("")+'</ol>'
+    +'<button class="btn alt" type="button" id="retake">Take the quiz again</button>';
+  out.style.display="block";
+  out.focus();
+  out.scrollIntoView({behavior:"smooth",block:"start"});
+  document.getElementById("retake").addEventListener("click",function(){
+    form.reset();out.style.display="none";window.scrollTo({top:0,behavior:"smooth"});
+  });
+});
+</script>
+</body>
+</html>
